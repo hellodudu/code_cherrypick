@@ -15,7 +15,7 @@ import (
 type config struct {
 	Filters []string `json:"filters"`
 	MinSize int      `json:"min_size"`
-	Pwd     string   `json:"pwd"`
+	Path    []string `json:"path"`
 	Prefix  []string `json:"prefix"`
 }
 
@@ -38,18 +38,20 @@ func main() {
 	allFiles := make([]string, 0)
 	chFile := make(chan struct{}, 1)
 	go func() {
-		if err := filepath.Walk(cfg.Pwd, func(path string, info os.FileInfo, err error) error {
-			ext := filepath.Ext(info.Name())
-			for _, v := range cfg.Filters {
-				if ext == v && info.Size() >= int64(cfg.MinSize) {
-					allFiles = append(allFiles, path)
-					break
+		for _, p := range cfg.Path {
+			if err := filepath.Walk(p, func(path string, info os.FileInfo, err error) error {
+				ext := filepath.Ext(info.Name())
+				for _, filter := range cfg.Filters {
+					if ext == filter && info.Size() >= int64(cfg.MinSize) {
+						allFiles = append(allFiles, path)
+						break
+					}
 				}
-			}
 
-			return nil
-		}); err != nil {
-			log.Fatal(err)
+				return nil
+			}); err != nil {
+				log.Fatal(err)
+			}
 		}
 
 		chFile <- struct{}{}

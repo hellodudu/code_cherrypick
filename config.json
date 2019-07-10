@@ -9,5 +9,7 @@
         "//"
     ],
     "min_size": 1500,
-    "pwd": "../code_analyse"
+    "path": [
+        "../code_cherrypick"
+    ]
 }
