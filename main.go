@@ -108,9 +108,9 @@ func readFile(name string) []string {
 		log.Fatal(err)
 	}
 
-	// Start reading from 1/3 size pos.
+	// Start reading from 1/4 size pos.
 	reader := bufio.NewReader(file)
-	_, err = reader.Discard(reader.Size() / 3)
+	_, err = reader.Discard(reader.Size() / 4)
 	if err == io.EOF {
 		return retCodes
 	}
