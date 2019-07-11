@@ -15,6 +15,7 @@ import (
 type config struct {
 	Filters []string `json:"filters"`
 	MinSize int      `json:"min_size"`
+	MinLine int      `json:"min_line"`
 	Path    []string `json:"path"`
 	Prefix  []string `json:"prefix"`
 }
@@ -143,7 +144,7 @@ func readFile(name string) []string {
 	var line string
 	num := 0
 	for {
-		if num >= 50 {
+		if num >= cfg.MinLine {
 			break
 		}
 

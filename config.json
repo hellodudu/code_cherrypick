@@ -9,6 +9,7 @@
         "//"
     ],
     "min_size": 1500,
+    "min_line": 50,
     "path": [
         "../code_cherrypick"
     ]
