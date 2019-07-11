@@ -13,11 +13,12 @@ import (
 )
 
 type config struct {
-	Filters []string `json:"filters"`
-	MinSize int      `json:"min_size"`
-	MinLine int      `json:"min_line"`
-	Path    []string `json:"path"`
-	Prefix  []string `json:"prefix"`
+	Filters        []string `json:"filters"`
+	MinSize        int      `json:"min_size"`
+	MinLinePerFile int      `json:"min_line_per_file"`
+	MaxTotalLine   int      `json:"max_total_line"`
+	Path           []string `json:"path"`
+	Prefix         []string `json:"prefix"`
 }
 
 var cfg config
@@ -76,6 +77,11 @@ func main() {
 	}
 
 	wg.Wait()
+
+	// save limit lines
+	if len(finalCodes) > cfg.MaxTotalLine {
+		finalCodes = finalCodes[:cfg.MaxTotalLine]
+	}
 
 	// write to file
 	ioutil.WriteFile("out.txt", []byte(strings.Join(finalCodes, "")), 0666)
@@ -144,7 +150,7 @@ func readFile(name string) []string {
 	var line string
 	num := 0
 	for {
-		if num >= cfg.MinLine {
+		if num >= cfg.MinLinePerFile {
 			break
 		}
 

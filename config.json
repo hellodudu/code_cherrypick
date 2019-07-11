@@ -5,11 +5,11 @@
     ],
     "prefix": [
         "//------",
-        "// -----",
-        "//"
+        "// -----"
     ],
     "min_size": 1500,
-    "min_line": 50,
+    "min_line_per_file": 50,
+    "max_total_line": 5000,
     "path": [
         "../code_cherrypick"
     ]
